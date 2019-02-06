@@ -6,19 +6,14 @@ class Manager(object):
         self.list = []
     
     def to_do(self):
-        self.list = []
-
         file_obj = open('todos.txt', 'r')
         rows = file_obj.read().split('\n')
 
         for index in range(1, len(rows)):
             cols = rows[index].split('|')
-            obj = item.Item(cols[0], cols[2], cols[3], cols[1])
-            self.list.append(obj)
-        
-        for entry in self.list:
-            print("-"* 10)
-            print(f"Task: {entry.task}\nCompleted: {entry.is_completed}\nDue: {entry.datetime_due}\nEntered: {entry.datetime_created}")
+
+            print('-'*10)
+            print(f"Task: {cols[0]}\nCompleted: {cols[1]}\nDue: {cols[2]}\nEntered: {cols[3]}")
 
         file_obj.close()
 
@@ -26,7 +21,7 @@ class Manager(object):
         file_obj = open('todos.txt', 'a')
 
         task = input('task: ')
-        due = input("due by (format YYYY-MM-DD HH:MM:SS): ")
+        due = input("due by: ")
 
         new_task = item.Item(task, due)
 

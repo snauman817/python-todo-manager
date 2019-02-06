@@ -45,7 +45,7 @@ todos.py (MAIN FILE, others should be imported to this file)
                 * user writes the task in input, attribute by attribute
                     Prompt is like so:
                     ** task: 
-                    ** due by (format YYYY-MM-DD): 
+                    ** due by (format YYYY-MM-DD HH:MM:SS): 
                 * each value from input is saved and put into an Item object
                 * that Item object is then converted into a string and placed into todos.txt with a helper method
 

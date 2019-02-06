@@ -7,22 +7,65 @@ todos.py (MAIN FILE, others should be imported to this file)
         # option to show only completed tasks, or completed and uncompleted tasks
     # add tasks to the list (and to the file)
 
-------CLASS STRUCTURE KEY (- : attribute, + : method, # : class)--------
+------CLASS STRUCTURE KEY (- : attribute, @ : method, # : class)--------
 
     # Item
-        - timestamp created (date/time) (datetime object)
-        - timestamp due (when the task should be completed by) (datetime object)
-        - is_completed (boolean)
+        - datetime_created (date/time) (datetime object)
+        - datetime_due (when the task should be completed by) (datetime object)
+        - is_completed (boolean, default is False)
         - task (text of the actual to-do)
         OTHER IDEAS:
             - primary key (maybe for referencing the item)
-                - (if not primary key, then you can loop through the list and make indexes for it)
+                * (if not primary key, then you can loop through the list and make indexes for it)
             - is_overdue (if you miss the time needed to finish)
+
+        @ init
+            * takes task and due by parameters
+            * sets attributes datetime_created and is_completed automatically
+                - datetime_created = datetime.now()
+                - is_completed = False
     
     # Manager
         @ to_do (print all the to-do items in the list)
+            % How it works:
+                * loop through all entries in todos.txt, split on the newlines
+                * take this array of strings and convert each entry into the proper data type, by splitting on the |
+                    ** if the entry is on a certain column, make it a datetime by reading the input and converting it (likely going to need to split on / or -)
+                * each of those entries must be converted back into an Item with the corresponding attributes lining up
+                * print these items in order of date/time, with the earliest date/time first
+
+            % parameters:
+                * show
+                    ** default value is only uncompleted items
+                    ** if the user sends in completed, it prints only completed tasks
+                    ** if the user sends in all, it prints both completed and uncompleted
+
         @ add (add a new Item to the list)
+            % How it works:
+                * user writes the task in input, attribute by attribute
+                    Prompt is like so:
+                    ** task: 
+                    ** due by (format YYYY-MM-DD): 
+                * each value from input is saved and put into an Item object
+                * that Item object is then converted into a string and placed into todos.txt with a helper method
+
         @ complete (mark an Item as complete)
+            % How it works:
+                * user sends in the name/id of the task that was completed
+                * function runs through todos.txt and grabs the entry where name/id matches input
+                * function takes that entry and converts it to an Item
+                * function takes that entry and deletes it from todos.txt
+                * function changes the Item's completed attribute to True
+                * function puts it back into todo.txt (using a helper method) with the new completed attribute
+
+        @ place_in_list (helper function to put item in todos.txt)
+            % How it works:
+                * it takes an Item as a parameter
+                * the Item's values are converted to strings
+                * those strings are placed into one string with |'s delimiting the values
+                * that singular string is shoved into the end of todos.txt after a newline characters
+                * in short, the string looks like this:
+                    ** "laundry|False|2000-01-01 8:00|2000-01-02 12:00"
 
 todos.txt, (Where the entries are stored. Script enters the files for you.)
 

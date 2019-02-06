@@ -1,0 +1,37 @@
+todos.py (MAIN FILE, others should be imported to this file)
+
+# updates todos.txt
+
+    # by default, only show uncompleted tasks
+        # order by due date descending
+        # option to show only completed tasks, or completed and uncompleted tasks
+    # add tasks to the list (and to the file)
+
+------CLASS STRUCTURE KEY (- : attribute, + : method, # : class)--------
+
+    # Item
+        - timestamp created (date/time) (datetime object)
+        - timestamp due (when the task should be completed by) (datetime object)
+        - is_completed (boolean)
+        - task (text of the actual to-do)
+        OTHER IDEAS:
+            - primary key (maybe for referencing the item)
+                - (if not primary key, then you can loop through the list and make indexes for it)
+            - is_overdue (if you miss the time needed to finish)
+    
+    # Manager
+        @ to_do (print all the to-do items in the list)
+        @ add (add a new Item to the list)
+        @ complete (mark an Item as complete)
+
+todos.txt, (Where the entries are stored. Script enters the files for you.)
+
+    Will be delimited by | characters
+    Every time to_do is called, it will loop through this file grabbing values and turning them into Items again to print out and put in an array
+
+
+    # split into a table
+        # event
+        # date entered
+        # is finished
+        # date/time due

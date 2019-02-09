@@ -1,54 +1,40 @@
 import item
+import datetime
 
 class Manager(object):
 
     def __init__(self):
-        pass
+        self.file_obj = open('todos.txt', 'r')
+        self.item_list = []
+        for line in self.file_obj.readlines():
+            cols = line.split('|')
+            self.item_list.append(item.Item(cols[0], cols[2], cols[3].split('\n')[0], cols[1]))
+
     
     def to_do(self, uncompleted_only = 0):
-        file_obj = open('todos.txt', 'r')
-        rows = file_obj.read().split('\n')
-
-        for index in range(1, len(rows)):
-            cols = rows[index].split('|')
+        for thing in self.item_list:
             if uncompleted_only == 2:
-                if cols[1] == 'True':
+                if thing.is_completed == True:
                     print('-'*10)
-                    print(f"Task: {cols[0]}\nCompleted: {cols[1]}\nDue: {cols[2]}\nEntered: {cols[3]}")
-            elif cols[1] == 'False' or uncompleted_only == 1:
+                    print(f"Task: {thing.task}\nCompleted: {thing.is_completed}\nDue: {thing.datetime_due}\nEntered: {thing.datetime_created}")
+            elif thing.is_completed == False or uncompleted_only == 1:
                 print('-'*10)
-                print(f"Task: {cols[0]}\nCompleted: {cols[1]}\nDue: {cols[2]}\nEntered: {cols[3]}")
+                print(f"Task: {thing.task}\nCompleted: {thing.is_completed}\nDue: {thing.datetime_due}\nEntered: {thing.datetime_created}")
 
-
-        file_obj.close()
 
     def add(self, task, due):
-        self.write_to_database(item.Item(task, due))
+        self.item_list.append(item.Item(task, due, datetime.datetime.now(), False))
     
-    def write_to_database(self, new_task):
-        file_obj = open('todos.txt', 'a')
-        file_obj.write(f"\n{new_task.task}|{new_task.is_completed}|{new_task.datetime_due}|{new_task.datetime_created}")
-        file_obj.close()
+    def save(self):
+        file_obj = open('todos.txt', 'w')
+        for thing in self.item_list:
+            file_obj.write(f"{thing.task}|{thing.is_completed}|{thing.datetime_due}|{thing.datetime_created}\n")
 
     def complete(self, task):
-        task_dict = {}
-
-        file_obj = open('todos.txt', 'r+')
-        rows = file_obj.read().split('\n')
-        
-        for index in range(1, len(rows)):
-            cols = rows[index].split('|')
-            task_dict[cols[0]] = item.Item(cols[0], cols[2], cols[3], cols[1])
-        
-        task_dict[task].is_completed = True
-
-        file_obj.truncate(0)
-
-        file_obj.write('task|completed|date due|date entered')
-        file_obj.close()
-
-        for entry in task_dict:
-            self.write_to_database(task_dict[entry])
+        for thing in self.item_list:
+            if thing.task == task:
+                thing.is_completed = True
+                break
 
     def interact(self, command):
         if 'help' in command:

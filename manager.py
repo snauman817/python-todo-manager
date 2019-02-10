@@ -1,4 +1,5 @@
 import item
+import project
 import datetime
 
 class Manager(object):
@@ -25,6 +26,20 @@ class Manager(object):
 
     def add(self, task, due):
         self.item_list.append(item.Item(task, due, datetime.datetime.now(), False))
+
+    def add_project(self, project_name):
+        print("What tasks must be done in this project?")
+        print("(type 'quit' to get out)")
+
+        group = project.Project(project_name, False)
+        choice = None
+        while choice != 'quit':
+            choice = input("task: ")
+            if choice != 'quit':
+                due = input("due by: ")
+                task = item.Item(choice, due, datetime.datetime.now(), False)
+                group.add_task(task)
+            
     
     def save(self):
         file_obj = open('todos.txt', 'w')
@@ -70,9 +85,13 @@ class Manager(object):
         elif 'clear' in command:
             self.clear()
         elif 'add' in command:
-            task = input('task: ')
-            due = input("due by: ")
-            self.add(task, due)
+            if 'project' in command:
+                name = input("project name:")
+                self.add_project(name)
+            else:
+                task = input('task: ')
+                due = input("due by: ")
+                self.add(task, due)
         elif 'complete' or 'finish' in command:
             task = input("Which task would you like to finish? : ")
             self.complete(task)

@@ -59,6 +59,8 @@ class Manager(object):
                 due = input("due by: ")
                 task = item.Item(choice, due, datetime.datetime.now(), False)
                 group.add_task(task)
+        
+        self.item_list.append(group)
             
     
     def save(self):

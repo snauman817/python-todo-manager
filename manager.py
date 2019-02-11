@@ -9,7 +9,18 @@ class Manager(object):
         self.item_list = []
         for line in file_obj.readlines():
             cols = line.split('|')
-            self.item_list.append(item.Item(cols[0], cols[2], cols[3].split('\n')[0], cols[1]))
+            if len(cols) == 4:
+                self.item_list.append(item.Item(cols[0], cols[2], cols[3].split('\n')[0], cols[1]))
+            else:
+                group = project.Project(cols[0], cols[1])
+                inner_tasks = cols[3].split('#')
+                
+                for thing in inner_tasks:
+                    prop = thing.split('*')
+                    piece = item.Item(prop[0], prop[2], prop[3], prop[1])
+                    group.add_task(piece)
+
+                self.item_list.append(group)
 
         file_obj.close()
     

@@ -1,5 +1,3 @@
-import item
-
 class Project(object):
     
     def __init__(self, name, is_complete):

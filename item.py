@@ -13,3 +13,6 @@ class Item(object):
             self.is_completed = True
         else:
             self.is_completed = is_completed
+
+    def get_class_name(self):
+        return 'Item'

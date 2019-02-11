@@ -1,3 +1,3 @@
 shopping|False|8:00|2019-02-10 23:06:31.265285
 homework|False|5:00|2019-02-10 23:06:47.505429
-science fair|False|diagram*False*9:00*2019-02-10 23:06:31.265285#experiments|False|5:00|2019-02-10 23:06:47.505429
+science fair|False|diagram*False*9:00*2019-02-10 23:06:31.265285#experiments*False*5:00*2019-02-10 23:06:47.505429

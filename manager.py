@@ -13,7 +13,7 @@ class Manager(object):
                 self.item_list.append(item.Item(cols[0], cols[2], cols[3].split('\n')[0], cols[1]))
             else:
                 group = project.Project(cols[0], cols[1])
-                inner_tasks = cols[3].split('#')
+                inner_tasks = cols[2].split('#')
                 
                 for thing in inner_tasks:
                     prop = thing.split('*')
@@ -26,13 +26,22 @@ class Manager(object):
     
     def to_do(self, uncompleted_only = 0):
         for thing in self.item_list:
-            if uncompleted_only == 2:
-                if thing.is_completed == True:
+            if thing.get_class_name() == 'Item':
+                if uncompleted_only == 2:
+                    if thing.is_completed == True:
+                        print('-'*10)
+                        print(f"Task: {thing.task}\nCompleted: {thing.is_completed}\nDue: {thing.datetime_due}\nEntered: {thing.datetime_created}")
+                elif thing.is_completed == False or uncompleted_only == 1:
                     print('-'*10)
                     print(f"Task: {thing.task}\nCompleted: {thing.is_completed}\nDue: {thing.datetime_due}\nEntered: {thing.datetime_created}")
-            elif thing.is_completed == False or uncompleted_only == 1:
+
+            elif thing.get_class_name() == 'Project':
                 print('-'*10)
-                print(f"Task: {thing.task}\nCompleted: {thing.is_completed}\nDue: {thing.datetime_due}\nEntered: {thing.datetime_created}")
+                print(f"PROJECT: {thing.name}\nCompleted: {thing.is_complete}")
+                
+                for obj in thing.items_list:
+                    print(f"\tTask: {obj.task}\n\tCompleted: {obj.is_completed}\n\tDue: {obj.datetime_due}\n\tEntered: {obj.datetime_created}")
+                    print('')
 
 
     def add(self, task, due):
@@ -55,7 +64,17 @@ class Manager(object):
     def save(self):
         file_obj = open('todos.txt', 'w')
         for thing in self.item_list:
-            file_obj.write(f"{thing.task}|{thing.is_completed}|{thing.datetime_due}|{thing.datetime_created}\n")
+            if thing.get_class_name() == 'Item':
+                file_obj.write(f"{thing.task}|{thing.is_completed}|{thing.datetime_due}|{thing.datetime_created}\n")
+            else:
+                master_string = ''
+                count = 0
+                for obj in thing.items_list:
+                    if count > 0:
+                        master_string += "#"
+                    master_string += f"{obj.task}*{obj.is_completed}*{obj.datetime_due}*{obj.datetime_created}"
+                    count += 1
+                file_obj.write(f"{thing.name}|{thing.is_complete}|{master_string}\n")
         
         file_obj.close()
 

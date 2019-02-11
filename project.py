@@ -3,6 +3,7 @@ class Project(object):
     def __init__(self, name, is_complete):
         self.items_list = []
         self.name = name
+        self.is_complete = is_complete
 
     def add_task(self, task):
         self.items_list.append(task)
@@ -21,3 +22,6 @@ class Project(object):
                 return False
         
         return True
+    
+    def get_class_name(self):
+        return 'Project'
